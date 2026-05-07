@@ -1,5 +1,5 @@
 import random
-from sentences import sentences
+from data.sentences import sentences
 # chosing what she said
 twss = random.choice(sentences)
 # what she said
@@ -54,4 +54,4 @@ for guess_num in range(1, 7):
 
     # lose
 else:
-    print("\nGAME OVER")
+    print("\nAh You don't know")
