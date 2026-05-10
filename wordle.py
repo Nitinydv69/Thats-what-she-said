@@ -70,22 +70,41 @@ def display_result(guess, result):
 
 
 # hint system :
-def give_hint(guess_num, she_said):
+def give_hint(she_said, used_hints):
 
-    if guess_num == 2:
-        print(f"The first word is:{she_said[0]}")
-    elif guess_num == 3:
-        print(f"The last word is {she_said[-1]}")
-    elif guess_num == 4:
-        print(f"Cmon there is {she_said[-2]} in it")
+    possible_hints = []
+
+    for word in she_said:
+        if word not in used_hints:
+            possible_hints.append(word)
+    if len(possible_hints) == 0:
+        print("No hints left")
+        return used_hints
+
+    hint = random.choice(possible_hints)
+
+    print(f"There is {hint} in the word")
+    used_hints.append(hint)
+
+    return used_hints
 
 
 # Main Game
 welcome_screen(she_said)
+# hint operation
+hint_left = 3
+used_hints = []
 
 guess_num = 1
 while guess_num <= 6:
-    guess = input(f"\nguess{guess_num}:").upper().split()
+
+    guess = input(f"\nguess{guess_num}:")
+    # quit game
+    if guess == "q":
+        print("Goodbye!")
+        exit()
+    guess = guess.upper().split()
+
     if not validate_guess(guess, she_said):
         continue
     result = check_guess(guess, she_said)
@@ -96,12 +115,17 @@ while guess_num <= 6:
         print("\n Congratulations!! THATS WHAT SHE SAID")
         break
 
-    use_hint = input("\nDo you want a hint? y/n: ").lower()
-    if use_hint == "y":
-        give_hint(guess_num, she_said)
-    elif use_hint == "q":
-        exit()
-
+    if guess_num < 6:
+        print(f"You have {hint_left} hints left")
+        if hint_left > 0:
+            use_hint = input("\nDo you want a hint? y/n: ").lower()
+            if use_hint == "y":
+                if hint_left > 0:
+                    used_hints = give_hint(she_said, used_hints)
+                    hint_left -= 1
+                    print(f"hints left: {hint_left}")
+                else:
+                    print("No hints left")
     guess_num += 1
 else:
     print("\n GAME OVER! SHE NEVER SAID THAT")
