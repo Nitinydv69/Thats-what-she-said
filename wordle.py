@@ -45,6 +45,8 @@ def check_guess(guess, she_said):
     # Green Pass
     for i in range(len(guess)):
         if guess[i] == she_said[i]:
+            if guess[i] not in correct_words:
+                correct_words.append(guess[i])
             result[i] = "🟩"
             remaining[i] = None
     # Yellow Pass
@@ -70,23 +72,22 @@ def display_result(guess, result):
 
 
 # hint system :
-def give_hint(she_said, used_hints):
+def give_hint(she_said, used_hints, correct_words):
 
     possible_hints = []
 
     for word in she_said:
-        if word not in used_hints:
+        if word not in used_hints and word not in correct_words:
             possible_hints.append(word)
     if len(possible_hints) == 0:
-        print("No hints left")
-        return used_hints
+        print("No Useful hints left :(")
+        return used_hints, False
 
     hint = random.choice(possible_hints)
 
     print(f"There is {hint} in the word")
     used_hints.append(hint)
-
-    return used_hints
+    return used_hints, True
 
 
 # Main Game
@@ -94,7 +95,7 @@ welcome_screen(she_said)
 # hint operation
 hint_left = 3
 used_hints = []
-
+correct_words = []
 guess_num = 1
 while guess_num <= 6:
 
@@ -121,8 +122,10 @@ while guess_num <= 6:
             use_hint = input("\nDo you want a hint? y/n: ").lower()
             if use_hint == "y":
                 if hint_left > 0:
-                    used_hints = give_hint(she_said, used_hints)
-                    hint_left -= 1
+                    used_hints, hint_given = give_hint(
+                        she_said, used_hints, correct_words)
+                    if hint_given:
+                        hint_left -= 1
                     print(f"hints left: {hint_left}")
                 else:
                     print("No hints left")
