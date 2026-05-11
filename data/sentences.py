@@ -48,5 +48,7 @@ sentences = [
     "this feels incredibly wrong",
     "you made it look easy",
     "i wasnt expecting that size",
-    "it got stuck halfway"
+    "it got stuck halfway",
+    "can we do it again",
+    "i need to fit it all inside"
 ]
