@@ -18,7 +18,7 @@ def welcome_screen(she_said):
     print("⬜ = word not in sentence")
     print("THE GAME BEGINS")
     print("GUESS WHAT SHE SAID")
-    print(f"{twss}")
+    # print(f"{twss}")
 
 
 # Validation Function

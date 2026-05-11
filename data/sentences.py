@@ -50,5 +50,6 @@ sentences = [
     "i wasnt expecting that size",
     "it got stuck halfway",
     "can we do it again",
-    "i need to fit it all inside"
+    "i need to fit it all inside",
+    "this might take a while"
 ]
