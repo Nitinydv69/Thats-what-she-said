@@ -711,6 +711,118 @@ questions = [
         "difficulty": 10,
         "category": "sus",
         "image": "images/stopped_earlier.jpg"
+    },
+
+    {
+        "sentence": "I just cant stop",
+        "difficulty": 3,
+        "category": "chaotic",
+        "image": ""
+    },
+
+    {
+        "sentence": "just put it in",
+        "difficulty": 2,
+        "category": "classic",
+        "image": ""
+    },
+
+    {
+        "sentence": "I need to be drunk to do this",
+        "difficulty": 7,
+        "category": "awkward",
+        "image": ""
+    },
+
+    {
+        "sentence": "I need to be drunk to enjoy it",
+        "difficulty": 7,
+        "category": "awkward",
+        "image": ""
+    },
+
+    {
+        "sentence": "it is too big for my hand",
+        "difficulty": 5,
+        "category": "size",
+        "image": ""
+    },
+
+    {
+        "sentence": "it is way too hard",
+        "difficulty": 4,
+        "category": "mechanical",
+        "image": ""
+    },
+
+    {
+        "sentence": "it feels perfect when I put it here",
+        "difficulty": 8,
+        "category": "accidental",
+        "image": ""
+    },
+
+    {
+        "sentence": "I need something in my mouth",
+        "difficulty": 5,
+        "category": "classic",
+        "image": ""
+    },
+
+    {
+        "sentence": "jump on it",
+        "difficulty": 2,
+        "category": "chaotic",
+        "image": ""
+    },
+
+    {
+        "sentence": "I need it in my mouth",
+        "difficulty": 4,
+        "category": "classic",
+        "image": ""
+    },
+
+    {
+        "sentence": "I can barely walk",
+        "difficulty": 3,
+        "category": "awkward",
+        "image": ""
+    },
+
+    {
+        "sentence": "my legs hurt",
+        "difficulty": 2,
+        "category": "awkward",
+        "image": ""
+    },
+
+    {
+        "sentence": "my legs are shaking",
+        "difficulty": 4,
+        "category": "awkward",
+        "image": ""
+    },
+
+    {
+        "sentence": "are you there yet",
+        "difficulty": 4,
+        "category": "timing",
+        "image": ""
+    },
+
+    {
+        "sentence": "it feels long enough",
+        "difficulty": 6,
+        "category": "size",
+        "image": ""
+    },
+
+    {
+        "sentence": "that is so risky",
+        "difficulty": 3,
+        "category": "sus",
+        "image": ""
     }
 
 ]

@@ -1,34 +1,15 @@
-# ==========================
 # Imports
-# ==========================
 
-import random
-from data.questions import questions
+from game_engine import (
+    get_random_question,
+    validate_guess,
+    check_guess,
+    give_hint,
+    get_max_hints
+)
 
-
-# ==========================
-# Question System
-# ==========================
-
-def get_questions_for_level(level):
-
-    return [
-        question
-        for question in questions
-        if question["difficulty"] <= level
-    ]
-
-
-def get_random_question(level):
-
-    available_questions = get_questions_for_level(level)
-
-    return random.choice(available_questions)
-
-
-# ==========================
 # Welcome Screen
-# ==========================
+
 
 def welcome_screen(she_said):
 
@@ -43,138 +24,76 @@ def welcome_screen(she_said):
     print("GUESS WHAT SHE SAID")
 
 
-# ==========================
-# Validation
-# ==========================
-
-def validate_guess(guess, she_said):
-
-    if len(guess) > len(she_said):
-        print(
-            f"❌ Too many words! "
-            f"She said {len(she_said)} words."
-        )
-        return False
-
-    if len(guess) < len(she_said):
-        print(
-            f"❌ Too few words! "
-            f"She said {len(she_said)} words."
-        )
-        return False
-
-    return True
-
-
-# ==========================
-# Guess Checking
-# ==========================
-
-def check_guess(guess, she_said, correct_words):
-
-    result = [None] * len(she_said)
-
-    # duplicate handling
-    remaining = she_said.copy()
-
-    # GREEN PASS
-    for i in range(len(guess)):
-
-        if guess[i] == she_said[i]:
-
-            if guess[i] not in correct_words:
-                correct_words.append(guess[i])
-
-            result[i] = "🟩"
-            remaining[i] = None
-
-    # YELLOW PASS
-    for i in range(len(guess)):
-
-        if result[i] is None:
-
-            if guess[i] in remaining:
-
-                result[i] = "🟨"
-
-                # remove duplicate match
-                remaining[
-                    remaining.index(guess[i])
-                ] = None
-
-            else:
-                result[i] = "⬜"
-
-    return result
-
-
-# ==========================
 # Display Results
-# ==========================
-
-def display_result(guess, result):
-
-    print("\n📊 RESULT:")
-
-    for word, color in zip(guess, result):
-        print(f"{word:<20} {color}")
 
 
-# ==========================
-# Hint System
-# ==========================
-
-def get_max_hints(level):
-
-    if level <= 2:
-        return 3
-
-    elif level <= 5:
-        return 2
-
-    elif level <= 7:
-        return 1
-
-    else:
-        return 0
-
-
-def give_hint(
-    she_said,
-    used_hints,
-    correct_words
+def display_result(
+    guess,
+    result
 ):
 
-    possible_hints = []
-
-    for word in she_said:
-
-        if (
-            word not in used_hints
-            and word not in correct_words
-        ):
-            possible_hints.append(word)
-
-    if len(possible_hints) == 0:
-
-        print("❌ No useful hints left :(")
-        return used_hints, False
-
-    hint = random.choice(possible_hints)
-
-    print(
-        f"\n💡 Hint: "
-        f"'{hint}' is in the sentence"
+    guess_text = (
+        " ".join(guess)
     )
 
-    used_hints.append(hint)
+    result_text = (
+        " ".join(result)
+    )
 
-    return used_hints, True
+    print("\n📊 RESULT")
+
+    print(
+        guess_text
+    )
+
+    print(
+        result_text
+    )
+
+# display guess history :
 
 
-# ==========================
-# Game Setup
-# ==========================
+def display_guess_history(
+    guess_history
+):
+
+    if not guess_history:
+        return
+
+    print("\n📜 GUESS HISTORY")
+
+    for i, (
+        guess,
+        result
+    ) in enumerate(
+        guess_history,
+        start=1
+    ):
+
+        formatted_guess = ""
+
+        for word in guess:
+            formatted_guess += (
+                f"{word:<12}"
+            )
+
+        formatted_result = ""
+
+        for emoji in result:
+            formatted_result += (
+                f"{emoji:<12}"
+            )
+
+        print(
+            f"\n{i:>2}. "
+            f"{formatted_guess}"
+        )
+
+        print(
+            "    "
+            f"{formatted_result}"
+        )
+
 
 player_level = 1
 questions_completed = 0
@@ -192,31 +111,12 @@ hint_left = get_max_hints(player_level)
 
 used_hints = []
 correct_words = []
-
+guessed_words = []
+guess_history = []
 guess_num = 1
 
-
-# ==========================
-# Game Start
-# ==========================
-
-welcome_screen(she_said)
-
-print(f"\n🎮 Level: {player_level}")
-print(f"📂 Category: {category}")
-print(f"💡 Hints Available: {hint_left}")
-
-print("\n💭 Think carefully...")
-print("👀 This one might be sus")
-
-
-# ==========================
-# Main Game Loop
-# ==========================
-
-# ==========================
 # Game Loop
-# ==========================
+
 
 player_level = 1
 questions_completed = 0
@@ -243,7 +143,8 @@ while True:
 
     used_hints = []
     correct_words = []
-
+    guess_history = []
+    guessed_words = []
     guess_num = 1
 
     # Welcome screen
@@ -276,6 +177,9 @@ while True:
 
     # Guess loop
     while guess_num <= 6:
+        display_guess_history(
+            guess_history
+        )
 
         guess = input(
             f"\n📝 Guess "
@@ -295,6 +199,9 @@ while True:
         guess = (
             guess.upper().split()
         )
+        for word in guess:
+            if word not in guessed_words:
+                guessed_words.append(word)
 
         # Validate
         if not validate_guess(
@@ -313,6 +220,13 @@ while True:
         display_result(
             guess,
             result
+        )
+        guess_history.append(
+            (guess, result)
+        )
+
+        display_guess_history(
+            guess_history
         )
 
         # WIN
@@ -358,38 +272,67 @@ while True:
             break
 
         # Hints
-        if (
-            guess_num < 6
-            and hint_left > 0
-        ):
 
-            print(
-                f"\n💡 You have "
-                f"{hint_left} hints left"
-            )
+        if guess_num < 6:
 
-            use_hint = input(
-                "Want a hint? "
-                "(y/n): "
-            ).lower()
+            if hint_left > 0:
 
-            if use_hint == "y":
-
-                (
-                    used_hints,
-                    hint_given
-                ) = give_hint(
-                    she_said,
-                    used_hints,
-                    correct_words
+                print(
+                    f"\n💡 You have "
+                    f"{hint_left} hints left"
                 )
 
-                if hint_given:
-                    hint_left -= 1
+                use_hint = input(
+                    "Want a hint? (y/n): "
+                ).lower()
 
+                if use_hint == "y":
+
+                    (
+                        used_hints,
+                        hint_given,
+                        hint
+                    ) = give_hint(
+                        she_said,
+                        used_hints,
+                        correct_words,
+                        guessed_words
+                    )
+
+                    if hint_given:
+
+                        print(
+                            f"\n💡 Hint: "
+                            f"'{hint}' "
+                            f"is in the sentence"
+                        )
+
+                        hint_left -= 1
+
+                        print(
+                            f"💡 Hints left: "
+                            f"{hint_left}"
+                        )
+
+                elif use_hint == "n":
+
+                    print(
+                        "👍 No hint used"
+                    )
+
+            else:
+
+                print(
+                    "\n❌ No hints left!"
+                )
+
+        # ALWAYS move to next guess
         guess_num += 1
 
-    # LOSS
+    # ==========================
+    # LOSS CONDITION
+    # ==========================
+
     else:
 
         print(
@@ -407,8 +350,7 @@ while True:
         )
 
         play_again = input(
-            "\nPlay again?"
-            " (y/n): "
+            "\nPlay again? (y/n): "
         ).lower()
 
         if play_again != "y":
