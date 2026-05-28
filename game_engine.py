@@ -190,3 +190,50 @@ def give_hint(
         True,
         hint
     )
+
+# scoring system
+
+
+def calculate_score(
+    guess_num,
+    difficulty,
+    hints_used
+):
+
+    # Base score by guess
+    guess_scores = {
+        1: 100,
+        2: 80,
+        3: 60,
+        4: 40,
+        5: 20,
+        6: 10
+    }
+
+    base_score = (
+        guess_scores.get(
+            guess_num,
+            0
+        )
+    )
+
+    # Difficulty bonus
+    difficulty_bonus = (
+        difficulty * 5
+    )
+
+    # Hint penalty
+    hint_penalty = (
+        hints_used * 10
+    )
+
+    final_score = (
+        base_score
+        + difficulty_bonus
+        - hint_penalty
+    )
+
+    return max(
+        final_score,
+        0
+    )

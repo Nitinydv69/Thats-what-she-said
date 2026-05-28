@@ -5,7 +5,8 @@ from game_engine import (
     validate_guess,
     check_guess,
     give_hint,
-    get_max_hints
+    get_max_hints,
+    calculate_score
 )
 
 # Welcome Screen
@@ -97,7 +98,7 @@ def display_guess_history(
 
 player_level = 1
 questions_completed = 0
-
+total_score = 0
 question = get_random_question(player_level)
 
 sentence = question["sentence"]
@@ -108,6 +109,7 @@ image = question["image"]
 she_said = sentence.upper().split()
 
 hint_left = get_max_hints(player_level)
+hints_used = 0
 
 used_hints = []
 correct_words = []
@@ -236,7 +238,28 @@ while True:
                 "\n🎉 THAT'S WHAT "
                 "SHE SAID 😭"
             )
+            score_gained = (
+                calculate_score(
+                    guess_num,
+                    difficulty,
+                    hints_used
+                )
+            )
 
+            total_score += (
+                score_gained
+            )
+
+            print(
+                f"\n🏆 +"
+                f"{score_gained} "
+                f"POINTS"
+            )
+
+            print(
+                f"⭐ TOTAL SCORE: "
+                f"{total_score}"
+            )
             questions_completed += 1
 
             print(
@@ -308,7 +331,7 @@ while True:
                         )
 
                         hint_left -= 1
-
+                        hints_used += 1
                         print(
                             f"💡 Hints left: "
                             f"{hint_left}"
